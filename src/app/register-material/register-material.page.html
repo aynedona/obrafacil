@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        [defaultHref]="'/project-details/' + projectId"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastrar Material</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="materialForm" (ngSubmit)="registerMaterial()">
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Nome do Material *</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="materialForm.get('name')?.touched && materialForm.get('name')?.hasError('required')"
+      >
+        Nome do material é obrigatório
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Quantidade *</ion-label>
+      <ion-input type="number" formControlName="quantity"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="materialForm.get('quantity')?.touched && materialForm.get('quantity')?.hasError('required')"
+      >
+        Quantidade é obrigatória
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Unidade de Medida *</ion-label>
+      <ion-select formControlName="unit">
+        <ion-select-option value="un">Unidade</ion-select-option>
+        <ion-select-option value="kg">Quilograma (kg)</ion-select-option>
+        <ion-select-option value="m">Metro (m)</ion-select-option>
+        <ion-select-option value="m2">Metro Quadrado (m²)</ion-select-option>
+        <ion-select-option value="m3">Metro Cúbico (m³)</ion-select-option>
+        <ion-select-option value="l">Litro (l)</ion-select-option>
+        <ion-select-option value="sc">Saco</ion-select-option>
+      </ion-select>
+      <ion-note
+        slot="error"
+        *ngIf="materialForm.get('unit')?.touched && materialForm.get('unit')?.hasError('required')"
+      >
+        Unidade de medida é obrigatória
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Preço Unitário (R$) *</ion-label>
+      <ion-input
+        type="number"
+        formControlName="unitPrice"
+        step="0.01"
+      ></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="materialForm.get('unitPrice')?.touched && materialForm.get('unitPrice')?.hasError('required')"
+      >
+        Preço unitário é obrigatório
+      </ion-note>
+      <ion-note
+        slot="error"
+        *ngIf="materialForm.get('unitPrice')?.touched && materialForm.get('unitPrice')?.hasError('min')"
+      >
+        Preço unitário deve ser maior que zero
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Etapa da Obra *</ion-label>
+      <ion-select formControlName="phaseId">
+        <ion-select-option *ngFor="let phase of phases" [value]="phase.id"
+          >{{ phase.name }}</ion-select-option
+        >
+      </ion-select>
+      <ion-note
+        slot="error"
+        *ngIf="materialForm.get('phaseId')?.touched && materialForm.get('phaseId')?.hasError('required')"
+      >
+        Etapa da obra é obrigatória
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label>
+        <h3>Valor Total</h3>
+        <p>R$ {{ calculateTotal() }}</p>
+      </ion-label>
+    </ion-item>
+
+    <div class="ion-text-center ion-margin-top">
+      <p>* Campos obrigatórios</p>
+    </div>
+
+    <ion-button expand="block" type="submit" class="ion-margin-top">
+      Cadastrar Material
+    </ion-button>
+  </form>
+</ion-content>

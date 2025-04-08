@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/clients"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalhes do Cliente</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Informações Pessoais</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label>
+            <h3>Nome Completo</h3>
+            <p>{{ client.fullName }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>CPF</h3>
+            <p>{{ client.cpf }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Data de Nascimento</h3>
+            <p>{{ client.birthDate | date: 'dd/MM/yyyy' }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Telefone</h3>
+            <p>{{ client.phone }}</p>
+          </ion-label>
+          <ion-button slot="end" fill="clear" href="tel:{{ client.phone }}">
+            <ion-icon name="call-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Endereço</h3>
+            <p>{{ client.address }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Email</h3>
+            <p>{{ client.email }}</p>
+          </ion-label>
+          <ion-button slot="end" fill="clear" href="mailto:{{ client.email }}">
+            <ion-icon name="mail-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Obras</ion-card-title>
+      <ion-button
+        slot="end"
+        fill="clear"
+        [routerLink]="['/register-project']"
+        [queryParams]="{clientId: clientId}"
+      >
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let project of projects">
+          <ion-label>
+            <h3>{{ project.address }}</h3>
+            <p>
+              Área: {{ project.totalArea }} m² | Início: {{ project.startDate |
+              date: 'dd/MM/yyyy' }}
+            </p>
+            <ion-progress-bar
+              [value]="project.progress / 100"
+            ></ion-progress-bar>
+            <ion-note>{{ project.progress }}%</ion-note>
+          </ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            [routerLink]="['/project-details', project.id]"
+          >
+            <ion-icon name="eye-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <ion-item *ngIf="projects.length === 0">
+          <ion-label class="ion-text-center">
+            <p>Nenhuma obra cadastrada</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Pagamentos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let payment of payments">
+          <ion-label>
+            <h3>{{ payment.date | date: 'dd/MM/yyyy' }}</h3>
+            <p>{{ payment.description }}</p>
+            <p>R$ {{ payment.amount.toFixed(2) }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Total Pago</h3>
+            <p>R$ {{ getTotalPayments().toFixed(2) }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item *ngIf="payments.length === 0">
+          <ion-label class="ion-text-center">
+            <p>Nenhum pagamento registrado</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

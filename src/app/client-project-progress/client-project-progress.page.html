@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/client-projects"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Progresso da Obra</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Informações da Obra</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label>
+            <h3>Endereço</h3>
+            <p>{{ project.address }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Área Total</h3>
+            <p>{{ project.totalArea }} m²</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Data de Início</h3>
+            <p>{{ project.startDate | date: 'dd/MM/yyyy' }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Previsão de Término</h3>
+            <p>{{ project.estimatedEndDate | date: 'dd/MM/yyyy' }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Progresso Geral</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-progress-bar [value]="project.progress / 100"></ion-progress-bar>
+          <ion-note slot="end">{{ project.progress }}%</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Etapas da Obra</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item
+          *ngFor="let phase of phases"
+          [detail]="true"
+          [routerLink]="['/phase-details', phase.id]"
+        >
+          <ion-label>
+            <h3>{{ phase.name }}</h3>
+            <p *ngIf="phase.startDate">
+              Início: {{ phase.startDate | date: 'dd/MM/yyyy' }}
+            </p>
+            <p *ngIf="phase.endDate">
+              Término: {{ phase.endDate | date: 'dd/MM/yyyy' }}
+            </p>
+            <ion-progress-bar
+              [value]="phase.progress / 100"
+              [color]="getPhaseStatusColor(phase.progress)"
+            ></ion-progress-bar>
+            <div class="progress-info">
+              <ion-note>{{ phase.progress }}%</ion-note>
+              <ion-badge [color]="getPhaseStatusColor(phase.progress)"
+                >{{ getPhaseStatusText(phase.progress) }}</ion-badge
+              >
+            </div>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Fotos Recentes</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- <ion-slides pager="true" [options]="{ slidesPerView: 1 }">
+        <ion-slide *ngFor="let phase of phases">
+          <div
+            *ngIf="phase.images && phase.images.length > 0"
+            class="slide-content"
+          >
+            <h3>{{ phase.name }}</h3>
+            <ion-img [src]="phase.images[0]" class="phase-image"></ion-img>
+            <p>{{ phase.description }}</p>
+          </div>
+        </ion-slide>
+        <ion-slide *ngIf="!phases.some(p => p.images && p.images.length > 0)">
+          <div class="slide-content">
+            <p>Nenhuma foto disponível no momento</p>
+          </div>
+        </ion-slide>
+      </ion-slides> -->
+    </ion-card-content>
+  </ion-card>
+</ion-content>

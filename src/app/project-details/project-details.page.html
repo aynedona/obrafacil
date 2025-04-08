@@ -1,0 +1,219 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/projects"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalhes da Obra</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Informações Gerais</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label>
+            <h3>Endereço</h3>
+            <p>{{ project.address }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Área Total</h3>
+            <p>{{ project.totalArea }} m²</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Pavimentos</h3>
+            <p>{{ project.floors }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Cliente</h3>
+            <p>{{ project.client.name }} - {{ project.client.phone }}</p>
+          </ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            [routerLink]="['/client-details', project.client.id]"
+          >
+            <ion-icon name="person-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Data de Início</h3>
+            <p>{{ project.startDate | date: 'dd/MM/yyyy' }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Previsão de Término</h3>
+            <p>{{ project.estimatedEndDate | date: 'dd/MM/yyyy' }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Progresso Geral</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-progress-bar [value]="project.progress / 100"></ion-progress-bar>
+          <ion-note slot="end">{{ project.progress }}%</ion-note>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Projetos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngIf="project.hasArchitectural">
+          <ion-label>
+            <h3>Projeto Arquitetônico</h3>
+          </ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            (click)="viewFile('architectural', project.files.architectural[0])"
+            *ngIf="project.files.architectural.length > 0"
+          >
+            <ion-icon name="document-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <ion-item *ngIf="project.hasElectrical">
+          <ion-label>
+            <h3>Projeto Elétrico</h3>
+          </ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            (click)="viewFile('electrical', project.files.electrical[0])"
+            *ngIf="project.files.electrical.length > 0"
+          >
+            <ion-icon name="document-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <ion-item *ngIf="project.hasPlumbing">
+          <ion-label>
+            <h3>Projeto Hidrossanitário</h3>
+          </ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            (click)="viewFile('plumbing', project.files.plumbing[0])"
+            *ngIf="project.files.plumbing.length > 0"
+          >
+            <ion-icon name="document-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <ion-item *ngIf="project.hasStructural">
+          <ion-label>
+            <h3>Projeto Estrutural</h3>
+          </ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            (click)="viewFile('structural', project.files.structural[0])"
+            *ngIf="project.files.structural.length > 0"
+          >
+            <ion-icon name="document-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+        <ion-item *ngIf="project.hasSoilSurvey">
+          <ion-label>
+            <h3>Sondagem de Solo</h3>
+          </ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            (click)="viewFile('soilSurvey', project.files.soilSurvey[0])"
+            *ngIf="project.files.soilSurvey.length > 0"
+          >
+            <ion-icon name="document-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Etapas da Obra</ion-card-title>
+      <ion-button
+        slot="end"
+        fill="clear"
+        [routerLink]="['/register-phase', projectId]"
+      >
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let phase of phases">
+          <ion-label>
+            <h3>{{ phase.name }}</h3>
+            <p *ngIf="phase.startDate">
+              Início: {{ phase.startDate | date: 'dd/MM/yyyy' }}
+            </p>
+            <p *ngIf="phase.endDate">
+              Término: {{ phase.endDate | date: 'dd/MM/yyyy' }}
+            </p>
+            <ion-progress-bar [value]="phase.progress / 100"></ion-progress-bar>
+            <ion-note>{{ phase.progress }}%</ion-note>
+          </ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            [routerLink]="['/phase-details', phase.id]"
+          >
+            <ion-icon name="eye-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Materiais e Orçamento</ion-card-title>
+      <ion-button
+        slot="end"
+        fill="clear"
+        [routerLink]="['/register-material', projectId]"
+      >
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let material of materials">
+          <ion-label>
+            <h3>{{ material.name }}</h3>
+            <p>{{ material.quantity }} - R$ {{ material.price.toFixed(2) }}</p>
+            <p>Etapa: {{ material.phase }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            <h3>Orçamento Total</h3>
+            <p>R$ {{ getTotalBudget().toFixed(2) }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

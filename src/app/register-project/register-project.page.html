@@ -1,0 +1,260 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/projects"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastro de Obra</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="projectForm" (ngSubmit)="registerProject()">
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Endereço da Obra *</ion-label>
+      <ion-input type="text" formControlName="address"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="projectForm.get('address')?.touched && projectForm.get('address')?.hasError('required')"
+      >
+        Endereço da obra é obrigatório
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Metragem Total (m²) *</ion-label>
+      <ion-input type="number" formControlName="totalArea"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="projectForm.get('totalArea')?.touched && projectForm.get('totalArea')?.hasError('required')"
+      >
+        Metragem total é obrigatória
+      </ion-note>
+      <ion-note
+        slot="error"
+        *ngIf="projectForm.get('totalArea')?.touched && projectForm.get('totalArea')?.hasError('min')"
+      >
+        Metragem deve ser maior que zero
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Quantidade de Pavimentos *</ion-label>
+      <ion-input type="number" formControlName="floors"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="projectForm.get('floors')?.touched && projectForm.get('floors')?.hasError('required')"
+      >
+        Quantidade de pavimentos é obrigatória
+      </ion-note>
+      <ion-note
+        slot="error"
+        *ngIf="projectForm.get('floors')?.touched && projectForm.get('floors')?.hasError('min')"
+      >
+        Deve ter pelo menos 1 pavimento
+      </ion-note>
+    </ion-item>
+
+    <ion-list-header>
+      <ion-label>Projetos Disponíveis</ion-label>
+    </ion-list-header>
+
+    <!-- Projeto Arquitetônico -->
+    <ion-item>
+      <ion-checkbox
+        formControlName="hasArchitectural"
+        slot="start"
+      ></ion-checkbox>
+      <ion-label>Projeto Arquitetônico</ion-label>
+    </ion-item>
+
+    <div
+      *ngIf="projectForm.get('hasArchitectural')?.value"
+      class="file-upload-section"
+    >
+      <ion-button size="small" (click)="architecturalFileInput.click()">
+        <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+        Enviar Arquivos
+      </ion-button>
+      <input
+        #architecturalFileInput
+        type="file"
+        (change)="onFileChange($event, 'architectural')"
+        multiple
+        style="display: none"
+      />
+
+      <div *ngIf="selectedFiles['architectural'].length > 0" class="file-list">
+        <ion-item
+          *ngFor="let file of selectedFiles['architectural']; let i = index"
+        >
+          <ion-label>{{ file.name }}</ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            (click)="removeFile('architectural', i)"
+          >
+            <ion-icon name="close-circle"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
+    </div>
+
+    <!-- Projeto Elétrico -->
+    <ion-item>
+      <ion-checkbox formControlName="hasElectrical" slot="start"></ion-checkbox>
+      <ion-label>Projeto Elétrico</ion-label>
+    </ion-item>
+
+    <div
+      *ngIf="projectForm.get('hasElectrical')?.value"
+      class="file-upload-section"
+    >
+      <ion-button size="small" (click)="electricalFileInput.click()">
+        <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+        Enviar Arquivos
+      </ion-button>
+      <input
+        #electricalFileInput
+        type="file"
+        (change)="onFileChange($event, 'electrical')"
+        multiple
+        style="display: none"
+      />
+
+      <div *ngIf="selectedFiles['electrical'].length > 0" class="file-list">
+        <ion-item
+          *ngFor="let file of selectedFiles['electrical']; let i = index"
+        >
+          <ion-label>{{ file.name }}</ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            (click)="removeFile('electrical', i)"
+          >
+            <ion-icon name="close-circle"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
+    </div>
+
+    <!-- Projeto Hidrossanitário -->
+    <ion-item>
+      <ion-checkbox formControlName="hasPlumbing" slot="start"></ion-checkbox>
+      <ion-label>Projeto Hidrossanitário</ion-label>
+    </ion-item>
+
+    <div
+      *ngIf="projectForm.get('hasPlumbing')?.value"
+      class="file-upload-section"
+    >
+      <ion-button size="small" (click)="plumbingFileInput.click()">
+        <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+        Enviar Arquivos
+      </ion-button>
+      <input
+        #plumbingFileInput
+        type="file"
+        (change)="onFileChange($event, 'plumbing')"
+        multiple
+        style="display: none"
+      />
+
+      <div *ngIf="selectedFiles['plumbing'].length > 0" class="file-list">
+        <ion-item *ngFor="let file of selectedFiles['plumbing']; let i = index">
+          <ion-label>{{ file.name }}</ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            (click)="removeFile('plumbing', i)"
+          >
+            <ion-icon name="close-circle"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
+    </div>
+
+    <!-- Projeto Estrutural -->
+    <ion-item>
+      <ion-checkbox formControlName="hasStructural" slot="start"></ion-checkbox>
+      <ion-label>Projeto Estrutural</ion-label>
+    </ion-item>
+
+    <div
+      *ngIf="projectForm.get('hasStructural')?.value"
+      class="file-upload-section"
+    >
+      <ion-button size="small" (click)="structuralFileInput.click()">
+        <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+        Enviar Arquivos
+      </ion-button>
+      <input
+        #structuralFileInput
+        type="file"
+        (change)="onFileChange($event, 'structural')"
+        multiple
+        style="display: none"
+      />
+
+      <div *ngIf="selectedFiles['structural'].length > 0" class="file-list">
+        <ion-item
+          *ngFor="let file of selectedFiles['structural']; let i = index"
+        >
+          <ion-label>{{ file.name }}</ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            (click)="removeFile('structural', i)"
+          >
+            <ion-icon name="close-circle"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
+    </div>
+
+    <!-- Sondagem de Solo -->
+    <ion-item>
+      <ion-checkbox formControlName="hasSoilSurvey" slot="start"></ion-checkbox>
+      <ion-label>Sondagem de Solo</ion-label>
+    </ion-item>
+
+    <div
+      *ngIf="projectForm.get('hasSoilSurvey')?.value"
+      class="file-upload-section"
+    >
+      <ion-button size="small" (click)="soilSurveyFileInput.click()">
+        <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+        Enviar Arquivos
+      </ion-button>
+      <input
+        #soilSurveyFileInput
+        type="file"
+        (change)="onFileChange($event, 'soilSurvey')"
+        multiple
+        style="display: none"
+      />
+
+      <div *ngIf="selectedFiles['soilSurvey'].length > 0" class="file-list">
+        <ion-item
+          *ngFor="let file of selectedFiles['soilSurvey']; let i = index"
+        >
+          <ion-label>{{ file.name }}</ion-label>
+          <ion-button
+            slot="end"
+            fill="clear"
+            (click)="removeFile('soilSurvey', i)"
+          >
+            <ion-icon name="close-circle"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
+    </div>
+
+    <div class="ion-text-center ion-margin-top">
+      <p>* Campos obrigatórios</p>
+    </div>
+
+    <ion-button expand="block" type="submit" class="ion-margin-top">
+      Cadastrar Obra
+    </ion-button>
+  </form>
+</ion-content>

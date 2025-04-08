@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        [defaultHref]="'/project-details/' + projectId"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastrar Etapa</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="phaseForm" (ngSubmit)="registerPhase()">
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Nome da Etapa *</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="phaseForm.get('name')?.touched && phaseForm.get('name')?.hasError('required')"
+      >
+        Nome da etapa é obrigatório
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Descrição</ion-label>
+      <ion-textarea rows="3" formControlName="description"></ion-textarea>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Ordem de Execução *</ion-label>
+      <ion-input type="number" formControlName="order"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="phaseForm.get('order')?.touched && phaseForm.get('order')?.hasError('required')"
+      >
+        Ordem de execução é obrigatória
+      </ion-note>
+      <ion-note
+        slot="error"
+        *ngIf="phaseForm.get('order')?.touched && phaseForm.get('order')?.hasError('min')"
+      >
+        Ordem deve ser maior que zero
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Data de Início *</ion-label>
+      <ion-datetime
+        displayFormat="DD/MM/YYYY"
+        formControlName="startDate"
+        presentation="date"
+      ></ion-datetime>
+      <ion-note
+        slot="error"
+        *ngIf="phaseForm.get('startDate')?.touched && phaseForm.get('startDate')?.hasError('required')"
+      >
+        Data de início é obrigatória
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Data Prevista de Término *</ion-label>
+      <ion-datetime
+        displayFormat="DD/MM/YYYY"
+        formControlName="estimatedEndDate"
+        presentation="date"
+      ></ion-datetime>
+      <ion-note
+        slot="error"
+        *ngIf="phaseForm.get('estimatedEndDate')?.touched && phaseForm.get('estimatedEndDate')?.hasError('required')"
+      >
+        Data prevista de término é obrigatória
+      </ion-note>
+    </ion-item>
+
+    <div class="ion-text-center ion-margin-top">
+      <p>* Campos obrigatórios</p>
+    </div>
+
+    <ion-button expand="block" type="submit" class="ion-margin-top">
+      Cadastrar Etapa
+    </ion-button>
+  </form>
+</ion-content>

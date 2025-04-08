@@ -1,0 +1,18 @@
+ion-content {
+  --padding-bottom: 50px;
+}
+
+.file-upload-section {
+  margin: 10px 0 20px 16px;
+}
+
+.file-list {
+  margin-top: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+p {
+  color: var(--ion-color-medium);
+  font-size: 14px;
+}

@@ -1,0 +1,130 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastro de Gerenciador</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="registerForm" (ngSubmit)="registerManager()">
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Nome Completo *</ion-label>
+      <ion-input type="text" formControlName="fullName"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.hasError('required')"
+      >
+        Nome completo é obrigatório
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">CPF *</ion-label>
+      <ion-input type="text" formControlName="cpf" maxlength="14"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="registerForm.get('cpf')?.touched && registerForm.get('cpf')?.hasError('required')"
+      >
+        CPF é obrigatório
+      </ion-note>
+      <ion-note
+        slot="error"
+        *ngIf="registerForm.get('cpf')?.touched && registerForm.get('cpf')?.hasError('invalidCpf')"
+      >
+        CPF inválido
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Data de Nascimento</ion-label>
+      <ion-datetime
+        displayFormat="DD/MM/YYYY"
+        formControlName="birthDate"
+        presentation="date"
+      ></ion-datetime>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Telefone *</ion-label>
+      <ion-input type="tel" formControlName="phone"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.hasError('required')"
+      >
+        Telefone é obrigatório
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Endereço *</ion-label>
+      <ion-input type="text" formControlName="address"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="registerForm.get('address')?.touched && registerForm.get('address')?.hasError('required')"
+      >
+        Endereço é obrigatório
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Email *</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('required')"
+      >
+        Email é obrigatório
+      </ion-note>
+      <ion-note
+        slot="error"
+        *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.hasError('email')"
+      >
+        Por favor, informe um email válido
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Senha *</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('required')"
+      >
+        Senha é obrigatória
+      </ion-note>
+      <ion-note
+        slot="error"
+        *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.hasError('minlength')"
+      >
+        A senha deve ter pelo menos 6 caracteres
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Confirmar Senha *</ion-label>
+      <ion-input type="password" formControlName="confirmPassword"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.hasError('required')"
+      >
+        Confirmação de senha é obrigatória
+      </ion-note>
+      <ion-note
+        slot="error"
+        *ngIf="registerForm.hasError('notSame') && registerForm.get('confirmPassword')?.touched"
+      >
+        As senhas não coincidem
+      </ion-note>
+    </ion-item>
+
+    <div class="ion-text-center ion-margin-top">
+      <p>* Campos obrigatórios</p>
+    </div>
+
+    <ion-button expand="block" type="submit" class="ion-margin-top">
+      Cadastrar
+    </ion-button>
+  </form>
+</ion-content>

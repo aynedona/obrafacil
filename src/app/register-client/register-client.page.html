@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/clients"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastro de Cliente</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="clientForm" (ngSubmit)="registerClient()">
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Nome Completo *</ion-label>
+      <ion-input type="text" formControlName="fullName"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="clientForm.get('fullName')?.touched && clientForm.get('fullName')?.hasError('required')"
+      >
+        Nome completo é obrigatório
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">CPF *</ion-label>
+      <ion-input type="text" formControlName="cpf" maxlength="14"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="clientForm.get('cpf')?.touched && clientForm.get('cpf')?.hasError('required')"
+      >
+        CPF é obrigatório
+      </ion-note>
+      <ion-note
+        slot="error"
+        *ngIf="clientForm.get('cpf')?.touched && clientForm.get('cpf')?.hasError('invalidCpf')"
+      >
+        CPF inválido
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Data de Nascimento</ion-label>
+      <ion-datetime
+        displayFormat="DD/MM/YYYY"
+        formControlName="birthDate"
+        presentation="date"
+      ></ion-datetime>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Telefone *</ion-label>
+      <ion-input type="tel" formControlName="phone"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="clientForm.get('phone')?.touched && clientForm.get('phone')?.hasError('required')"
+      >
+        Telefone é obrigatório
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Endereço *</ion-label>
+      <ion-input type="text" formControlName="address"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="clientForm.get('address')?.touched && clientForm.get('address')?.hasError('required')"
+      >
+        Endereço é obrigatório
+      </ion-note>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Email *</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+      <ion-note
+        slot="error"
+        *ngIf="clientForm.get('email')?.touched && clientForm.get('email')?.hasError('required')"
+      >
+        Email é obrigatório
+      </ion-note>
+      <ion-note
+        slot="error"
+        *ngIf="clientForm.get('email')?.touched && clientForm.get('email')?.hasError('email')"
+      >
+        Por favor, informe um email válido
+      </ion-note>
+    </ion-item>
+
+    <div class="ion-text-center ion-margin-top">
+      <p>* Campos obrigatórios</p>
+    </div>
+
+    <ion-button expand="block" type="submit" class="ion-margin-top">
+      Cadastrar Cliente
+    </ion-button>
+  </form>
+</ion-content>
